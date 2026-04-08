@@ -1,0 +1,18 @@
+name: Sync fork with upstream
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sync fork
+        run: |
+          gh api repos/chrismeyersfsu/controller-team-utilities/merge-upstream \
+            --method POST \
+            --field branch=main
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
