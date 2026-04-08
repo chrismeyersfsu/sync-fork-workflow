@@ -9,9 +9,17 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - name: Sync fork
+      - name: Sync controller-team-utilities fork
         run: |
           gh api repos/chrismeyersfsu/controller-team-utilities/merge-upstream \
+            --method POST \
+            --field branch=main
+        env:
+          GH_TOKEN: ${{ secrets.SYNC_FORK_PAT }}
+
+      - name: Sync aap-dev fork
+        run: |
+          gh api repos/chrismeyersfsu/aap-dev/merge-upstream \
             --method POST \
             --field branch=main
         env:
