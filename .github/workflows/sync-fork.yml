@@ -24,3 +24,11 @@ jobs:
             --field branch=main
         env:
           GH_TOKEN: ${{ secrets.SYNC_FORK_PAT }}
+
+      - name: Sync django-ansible-base-public telemetry branch from upstream devel
+        run: |
+          gh api repos/chrismeyersfsu/django-ansible-base-public/merge-upstream \
+            --method POST \
+            --field branch=telemetry
+        env:
+          GH_TOKEN: ${{ secrets.SYNC_FORK_PAT }}
