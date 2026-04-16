@@ -25,10 +25,16 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.SYNC_FORK_PAT }}
 
-      - name: Sync django-ansible-base-public telemetry branch from upstream devel
+      - name: Rebase django-ansible-base-public telemetry branch onto upstream devel
         run: |
-          gh api repos/chrismeyersfsu/django-ansible-base-public/merge-upstream \
-            --method POST \
-            --field branch=telemetry
+          git clone "https://x-access-token:${GH_TOKEN}@github.com/chrismeyersfsu/django-ansible-base-public.git" repo
+          cd repo
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git remote add upstream https://github.com/ansible/django-ansible-base.git
+          git fetch upstream devel
+          git checkout telemetry
+          git rebase upstream/devel
+          git push --force-with-lease origin telemetry
         env:
           GH_TOKEN: ${{ secrets.SYNC_FORK_PAT }}
